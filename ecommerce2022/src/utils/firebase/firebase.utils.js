@@ -36,5 +36,5 @@ export const db = getFirestore();
 
 export const createUserDocFromAuth = async (userAuth) => {
     const userDocRef = doc(db, "users", userAuth.uid);
-    
+    const userSnapShot = await getDoc(userDocRef)
 }
