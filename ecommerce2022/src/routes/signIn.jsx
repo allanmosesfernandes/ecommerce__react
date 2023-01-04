@@ -15,9 +15,7 @@ const SignIn = () => {
 
   return (
     <div>
-        <button onClick={logGoogleUser}>
-       Sign in with Google Pop up
-        </button>
+        <button onClick={logGoogleUser}>Sign in with Google Pop up </button>
     </div>
   )
 }
