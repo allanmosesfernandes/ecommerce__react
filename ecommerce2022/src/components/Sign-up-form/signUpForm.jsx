@@ -1,5 +1,9 @@
 import { useState, React } from 'react'
 import { createUserDocFromAuth, createAuthUserEmailPassword} from '../../utils/firebase/firebase.utils';
+import FormInput from '../formInput/formInput';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 const SignUpForm = () => {
 
     const defaultFormFields = {
@@ -32,6 +36,7 @@ const SignUpForm = () => {
       try {
       const {user} = await createAuthUserEmailPassword(email, password);
       const response = await createUserDocFromAuth(user, {displayName});
+      toast.success('Account created successfully!');
       resetFormFields()
       
       }catch(error){
@@ -39,14 +44,14 @@ const SignUpForm = () => {
             alert("Email already exists!")
         }
       }
-    
     }
     
     return (
         <div>
             <form onSubmit={formSubmit}>
-            <label>Display Name</label>
-            <input 
+            
+            <FormInput 
+                label="Display Name"
                 type="text"
                 placeholder=''
                 required
@@ -56,8 +61,8 @@ const SignUpForm = () => {
                 minLength="3"
             />
 
-            <label>Email</label>
-            <input 
+            <FormInput
+                label="Email"
                 type="email"
                 placeholder=''
                 required
@@ -66,8 +71,8 @@ const SignUpForm = () => {
                 onChange={handleChange}
             />
 
-            <label>Password</label>
-            <input 
+           <FormInput
+                label="Password" 
                 type="password"
                 placeholder=''
                 required
@@ -78,8 +83,8 @@ const SignUpForm = () => {
 
             />
 
-            <label>Confirm Password</label>
-            <input 
+            <FormInput
+                label="Confirm Password"
                 type="password"
                 placeholder=''
                 required
@@ -90,6 +95,7 @@ const SignUpForm = () => {
             />
             <button type='submit'> Sign Up</button>
         </form>
+        <ToastContainer />
     </div>
   )
 }
