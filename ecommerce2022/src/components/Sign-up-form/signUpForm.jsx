@@ -1,33 +1,57 @@
-import React from 'react'
+import { useState, React } from 'react'
 
 const SignUpForm = () => {
-  return (
-    <div>
-        <form action="">
+
+    const defaultFormFields = {
+        displayName: "",
+        email: "",
+        password: "",
+        confirmPassword: ""
+    }
+
+    const [formFields, setFormFields] = useState(defaultFormFields);
+    const {displayName, email, password, confirmPassword} = formFields;
+
+    return (
+        <div>
+            <form action="">
             <label>Display Name</label>
             <input 
                 type="text"
                 placeholder=''
                 required
-
+                name='displayName'
+                value={displayName}
             />
+
             <label>Email</label>
             <input 
                 type="email"
                 placeholder=''
                 required
+                name='email'
+                value={email}
+            />
+
+            <label>Password</label>
+            <input 
+                type="password"
+                placeholder=''
+                required
+                minlength="6" 
+                name="password"
+                value={password}
 
             />
-            <label>Password</label>
-g
+            
             <label>Confirm Password</label>
             <input 
                 type="password"
                 placeholder=''
                 required
-                minlength="8" 
-                title="Password must be at least 8 characters long"
-
+                minlength="6" 
+                name="confirmPassword"
+                value={confirmPassword}
             />
             <button type='submit'> Sign Up</button>
         </form>
