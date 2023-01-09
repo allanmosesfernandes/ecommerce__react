@@ -3,6 +3,8 @@ import { createUserDocFromAuth, createAuthUserEmailPassword} from '../../utils/f
 import FormInput from '../formInput/formInput';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import './sign-up-form-styles.scss'
+import ButtonComponent from '../Button/button-component';
 
 const SignUpForm = () => {
 
@@ -47,7 +49,9 @@ const SignUpForm = () => {
     }
     
     return (
-        <div>
+        <div className='sign-up-container'>
+            <h2 >Don't have an account?</h2>
+            <span> Sign up with your email and password</span>
             <form onSubmit={formSubmit}>
             
             <FormInput 
