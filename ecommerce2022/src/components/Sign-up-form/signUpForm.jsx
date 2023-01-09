@@ -97,7 +97,8 @@ const SignUpForm = () => {
                 value={confirmPassword}
                 onChange={handleChange}
             />
-            <button type='submit'> Sign Up</button>
+            <ButtonComponent type="submit" buttonType="google">Sign up</ButtonComponent>
+            {/* <button type='submit'> Sign Up</button> */}
         </form>
         <ToastContainer />
     </div>
