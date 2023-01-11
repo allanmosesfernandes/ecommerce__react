@@ -26,6 +26,7 @@ const SignInForm = () => {
         await createUserDocFromAuth(user);
         //display name for Google Popup instead of email
         userEmail = user.displayName;
+        toast.dismiss();
         toast.success(`Welcome back ${userEmail}`)
     } catch (error) {
         alert(`error: ${error}`)
@@ -81,7 +82,7 @@ const handleSubmit = async (event) => {
             default:
                 errorMessage = "There was a problem creating your account. Please try again later";
         }
-        alert(errorMessage);
+        toast.error(errorMessage);
 
     }
 
@@ -89,18 +90,6 @@ const handleSubmit = async (event) => {
 
     return (
         <div className='sign-up-container'>
-            <ToastContainer
-                    position="top-center"
-                    autoClose={4000}
-                    hideProgressBar={false}
-                    newestOnTop={false}
-                    closeOnClick
-                    rtl={false}
-                    pauseOnFocusLoss
-                    draggable
-                    pauseOnHover
-                    theme="light"
-                />
 
             <h2>Already have an account?</h2>
             <span> Sign in with your email and password</span>
