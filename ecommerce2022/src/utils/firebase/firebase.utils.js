@@ -62,3 +62,10 @@ export const createAuthUserEmailPassword = async (email, password) => {
   if(!email || !password) return;
   return await createUserWithEmailAndPassword(auth, email, password);
 }
+
+
+//======== Sign In Already existing user=========//
+export const signInAuthUserEmailPassword = async (email,password) => {
+    if(!email || !password) return;
+    return await signInWithEmailAndPassword(auth, email, password);
+}
