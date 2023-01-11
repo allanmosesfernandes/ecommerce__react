@@ -4,9 +4,12 @@ import FormInput from '../formInput/formInput';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ButtonComponent from '../Button/button-component';
+import "./sign-in-form-styles.scss";
 
 const SignInForm = () => {
-    //===Default Form Fields for use state==//
+
+    //=== Default Form Fields for use state==//
+
     const defaultFormFields = {
         email: "",
         password: "",
@@ -15,47 +18,93 @@ const SignInForm = () => {
     const [formFields, setFormFields] = useState(defaultFormFields);
     const {email, password} = formFields;
 
-    //==Sign In Using Google Pop-up ==//
+    //== Sign In Using Google Pop-up ==//
     
     const logGooglePopUpUser = async () => {
+ try {
         const {user} = await signInWithGooglePopUp();
-        const userDocRef  = await createUserDocFromAuth(user);
+        await createUserDocFromAuth(user);
         //display name for Google Popup instead of email
         userEmail = user.displayName;
         toast.success(`Welcome back ${userEmail}`)
+    } catch (error) {
+        alert(`error: ${error}`)
+    }
     }
 
-    //==form field change event handler ==//
+    //== form field change event handler ==//
+
     const handleChange = (event) => {
         const {name, value} = event.target;
         setFormFields({...formFields, [name]:value});
     }
 
+    //== Reset form fields ==//
+
     const resetFormFields = () => {
         setFormFields(defaultFormFields)
     }
-    const formSubmit = async (event) => {
+
+    //== Form Submit for Email & Password ==//
+
+const handleSubmit = async (event) => {
     event.preventDefault();
-    
-        try {
+
+    try{
         const response = await signInAuthUserEmailPassword(email, password);
-        const {user} = response;
-        userEmail = user.email.split("@")[0];
-        console.log(userEmail);
-        toast.success(`Welcome back ${(userEmail)} !`);
-        resetFormFields();
-        }catch(error){
-            if(error.code === "auth/email-already-in-use"){
-                alert("Email already exists!")
-            }
-        }
+        if(response) {
+            const {user} = response;
+            const {email} = user;
+            resetFormFields();
+            toast.success(`Welcome ${email} `)
+        };
+
+        console.log(response.user);
     }
-    
+    catch(error){
+        let errorMessage = "";
+        console.log(error.message)
+        switch(error.code) {
+      
+            case "auth/user-not-found":
+                errorMessage = "We're sorry, but we couldn't find an account associated with that email address. Please double-check the email you entered and try again, or create a new account";
+                break;
+
+            case "auth/wrong-password":
+                errorMessage = "We're sorry, but the password you entered is incorrect. Please double-check your password and try again";
+                break;
+
+            case "auth/account-exists-with-different-credential":
+                errorMessage = "An account already exists with this email. Please sign in with that account or link the social account with that email address.";
+                break;
+
+            default:
+                errorMessage = "There was a problem creating your account. Please try again later";
+        }
+        alert(errorMessage);
+
+    }
+
+}
+
     return (
         <div className='sign-up-container'>
-            <h2 >Already have an account?</h2>
+            <ToastContainer
+                    position="top-center"
+                    autoClose={4000}
+                    hideProgressBar={false}
+                    newestOnTop={false}
+                    closeOnClick
+                    rtl={false}
+                    pauseOnFocusLoss
+                    draggable
+                    pauseOnHover
+                    theme="light"
+                />
+
+            <h2>Already have an account?</h2>
             <span> Sign in with your email and password</span>
-            <form onSubmit={formSubmit}>
+            <form onSubmit={handleSubmit}>
             
             <FormInput
                 label="Email"
@@ -78,11 +127,12 @@ const SignInForm = () => {
                 onChange={handleChange}
 
             />
+            <div className="buttons-container">
+                <ButtonComponent type="submit" buttonType="inverted">Sign In </ButtonComponent>
+                <ButtonComponent type="button" onClick={logGooglePopUpUser} buttonType="google">Google Sign In </ButtonComponent>
+            </div>
 
-            <ButtonComponent type="submit" buttonType="inverted">Sign In </ButtonComponent>
-            <ButtonComponent type="button" onClick={logGooglePopUpUser} buttonType="google">Google Sign In </ButtonComponent>
         </form>
-        <ToastContainer />
     </div>
   )
 }

@@ -4,7 +4,7 @@ import Home from './routes/home';
 import "./categories.styles.scss"
 import { Routes, Route } from 'react-router-dom';
 import Navigation from './routes/navigation';
-import Auth from './routes/auth';
+import Auth from './routes/auth/auth';
 
 const Shop = () => {
   return (
