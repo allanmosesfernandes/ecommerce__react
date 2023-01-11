@@ -1,25 +1,33 @@
 import { useState, React } from 'react'
-import { createUserDocFromAuth, createAuthUserEmailPassword, signInAuthUserEmailPassword} from '../../utils/firebase/firebase.utils';
+import { createUserDocFromAuth, createAuthUserEmailPassword, signInAuthUserEmailPassword, signInWithGooglePopUp} from '../../utils/firebase/firebase.utils';
 import FormInput from '../formInput/formInput';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-// import './sign-up-form-styles.scss'
 import ButtonComponent from '../Button/button-component';
 
 const SignInForm = () => {
-
+    //===Default Form Fields for use state==//
     const defaultFormFields = {
         email: "",
         password: "",
     }
-
+    let userEmail = ""
     const [formFields, setFormFields] = useState(defaultFormFields);
     const {email, password} = formFields;
 
-    //form field change event handler
+    //==Sign In Using Google Pop-up ==//
+    
+    const logGooglePopUpUser = async () => {
+        const {user} = await signInWithGooglePopUp();
+        const userDocRef  = await createUserDocFromAuth(user);
+        //display name for Google Popup instead of email
+        userEmail = user.displayName;
+        toast.success(`Welcome back ${userEmail}`)
+    }
+
+    //==form field change event handler ==//
     const handleChange = (event) => {
         const {name, value} = event.target;
-
         setFormFields({...formFields, [name]:value});
     }
 
@@ -28,7 +36,7 @@ const SignInForm = () => {
     }
     const formSubmit = async (event) => {
     event.preventDefault();
-    let userEmail = ""
+    
         try {
         const response = await signInAuthUserEmailPassword(email, password);
         const {user} = response;
@@ -36,7 +44,6 @@ const SignInForm = () => {
         console.log(userEmail);
         toast.success(`Welcome back ${(userEmail)} !`);
         resetFormFields();
-        
         }catch(error){
             if(error.code === "auth/email-already-in-use"){
                 alert("Email already exists!")
@@ -73,7 +80,7 @@ const SignInForm = () => {
             />
 
             <ButtonComponent type="submit" buttonType="inverted">Sign In </ButtonComponent>
-            {/* <button type='submit'> Sign Up</button> */}
+            <ButtonComponent type="button" onClick={logGooglePopUpUser} buttonType="google">Google Sign In </ButtonComponent>
         </form>
         <ToastContainer />
     </div>
