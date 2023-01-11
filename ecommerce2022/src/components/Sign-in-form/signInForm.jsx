@@ -1,11 +1,12 @@
-import { useState, React } from 'react'
-import { createUserDocFromAuth, createAuthUserEmailPassword, signInAuthUserEmailPassword, signInWithGooglePopUp} from '../../utils/firebase/firebase.utils';
+import { useState, useContext } from 'react'
+import { createUserDocFromAuth, signInAuthUserEmailPassword, signInWithGooglePopUp} from '../../utils/firebase/firebase.utils';
 import FormInput from '../formInput/formInput';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ButtonComponent from '../Button/button-component';
 import "./sign-in-form-styles.scss";
 
+import { UserContext } from '../../contexts/userContext';
 const SignInForm = () => {
 
     //=== Default Form Fields for use state==//
@@ -17,20 +18,23 @@ const SignInForm = () => {
     let userEmail = ""
     const [formFields, setFormFields] = useState(defaultFormFields);
     const {email, password} = formFields;
+    
+    const { setCurrentUser } = useContext(UserContext)
 
     //== Sign In Using Google Pop-up ==//
     
     const logGooglePopUpUser = async () => {
- try {
-        const {user} = await signInWithGooglePopUp();
-        await createUserDocFromAuth(user);
-        //display name for Google Popup instead of email
-        userEmail = user.displayName;
-        toast.dismiss();
-        toast.success(`Welcome back ${userEmail}`)
-    } catch (error) {
-        alert(`error: ${error}`)
-    }
+        try {
+                const {user} = await signInWithGooglePopUp();
+                await createUserDocFromAuth(user);
+                //display name for Google Popup instead of email
+                userEmail = user.displayName;
+                toast.dismiss();
+                toast.success(`Welcome back ${userEmail}`)
+            } 
+        catch (error) {
+            alert(`error: ${error}`)
+        }
     }
 
     //== form field change event handler ==//
@@ -48,21 +52,20 @@ const SignInForm = () => {
 
     //== Form Submit for Email & Password ==//
 
-const handleSubmit = async (event) => {
+    const handleSubmit = async (event) => {
     event.preventDefault();
 
-    try{
-        const response = await signInAuthUserEmailPassword(email, password);
-        if(response) {
-            const {user} = response;
-            const {email} = user;
-            resetFormFields();
-            toast.success(`Welcome ${email} `)
-        };
-
-        console.log(response.user);
-    }
-    catch(error){
+        try{
+            const response = await signInAuthUserEmailPassword(email, password);
+            if(response) {
+                const {user} = response;
+                const {email} = user;
+                setCurrentUser(user);
+                resetFormFields();
+                toast.success(`Welcome ${email} `)
+            };
+        }
+        catch(error){
         let errorMessage = "";
         console.log(error.message)
         switch(error.code) {
@@ -83,7 +86,6 @@ const handleSubmit = async (event) => {
                 errorMessage = "There was a problem creating your account. Please try again later";
         }
         toast.error(errorMessage);
-
     }
 
 }

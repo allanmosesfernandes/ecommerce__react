@@ -11,7 +11,6 @@ const Auth = () => {
 
   return (
         <div className='authentication-container'>
-      
         <SignInForm />
         <SignUpForm />
 

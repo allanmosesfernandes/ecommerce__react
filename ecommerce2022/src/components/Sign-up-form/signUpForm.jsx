@@ -1,13 +1,13 @@
-import { useState, React } from 'react'
+import { useState, React, useContext } from 'react'
 import { createUserDocFromAuth, createAuthUserEmailPassword} from '../../utils/firebase/firebase.utils';
 import FormInput from '../formInput/formInput';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './sign-up-form-styles.scss'
 import ButtonComponent from '../Button/button-component';
+import { UserContext } from '../../contexts/userContext';
 
 const SignUpForm = () => {
-
     const defaultFormFields = {
         displayName: "",
         email: "",
