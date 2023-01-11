@@ -14,14 +14,14 @@ const SignUpForm = () => {
         password: "",
         confirmPassword: ""
     }
-
+    //== context for storing user state ==//
+    const {currentUser, setCurrentUser} = useContext(UserContext);
     const [formFields, setFormFields] = useState(defaultFormFields);
     const {displayName, email, password, confirmPassword} = formFields;
 
     //form field change event handler
     const handleChange = (event) => {
         const {name, value} = event.target;
-
         setFormFields({...formFields, [name]:value});
     }
 
@@ -39,7 +39,8 @@ const SignUpForm = () => {
       const {user} = await createAuthUserEmailPassword(email, password);
       const response = await createUserDocFromAuth(user, {displayName});
       toast.success('Account created successfully!');
-      resetFormFields()
+      setCurrentUser(user);
+      resetFormFields();
       
       }catch(error){
         if(error.code === "auth/email-already-in-use"){

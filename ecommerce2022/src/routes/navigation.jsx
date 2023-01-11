@@ -6,7 +6,13 @@ import { UserContext } from '../contexts/userContext'
 
 const Navigation = () => {
     const { currentUser } = useContext(UserContext);
-    console.log(currentUser);
+    
+    const signOutHandler = () => {
+        
+    return 
+
+    }
+
     return (
         <Fragment>
             <div className="navigation">
@@ -15,12 +21,13 @@ const Navigation = () => {
                 </Link>
                 
                 <div className="nav-links-container">
-                    <Link className='nav-link' to="shop">
-                        Shop
-                    </Link>
-                    <Link className='nav-link' to="sign-in">
-                        Sign In
-                    </Link>
+                    <Link className='nav-link'>Home</Link>
+                    {currentUser ? (
+                        <span className='nav-link' onClick={signOutHandler}>SIGN OUT</span>
+                    ) : (
+                        <Link className='nav-link' to='/sign-in'> SIGN IN </Link>
+                    )}
+
                 </div>
             </div>
             <Outlet />
