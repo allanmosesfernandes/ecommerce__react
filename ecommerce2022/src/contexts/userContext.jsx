@@ -1,5 +1,5 @@
 import { createContext, useState, useEffect } from "react";
-import { onAuthStateChangedListener, signOutAuthUser } from "../utils/firebase/firebase.utils";
+import { onAuthStateChangedListener, createUserDocFromAuth} from "../utils/firebase/firebase.utils";
 
 
 //== The actual user context/contextual value ==//
@@ -16,8 +16,16 @@ export const UserProvider = ({ children }) => {
     // use Effect to track Authentication State CHanges
     useEffect(() => {
         const unsubscribe = onAuthStateChangedListener((user) => {
+            
+            if(user) {
+                createUserDocFromAuth(user)
+            }
             console.log(user);
-        })
+            setCurrentUser(user);
+           
+        });
+
+        return unsubscribe;
     }, [])
 
     return <UserContext.Provider value={value}>{children}</UserContext.Provider>

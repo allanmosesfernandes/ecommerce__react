@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react'
+import { useState } from 'react'
 import { createUserDocFromAuth, signInAuthUserEmailPassword, signInWithGooglePopUp} from '../../utils/firebase/firebase.utils';
 import FormInput from '../formInput/formInput';
 import { toast } from 'react-toastify';
@@ -6,7 +6,6 @@ import 'react-toastify/dist/ReactToastify.css';
 import ButtonComponent from '../Button/button-component';
 import "./sign-in-form-styles.scss";
 
-import { UserContext } from '../../contexts/userContext';
 const SignInForm = () => {
 
     //=== Default Form Fields for use state==//
@@ -19,14 +18,14 @@ const SignInForm = () => {
     const [formFields, setFormFields] = useState(defaultFormFields);
     const {email, password} = formFields;
     
-    const { setCurrentUser } = useContext(UserContext)
+    
 
     //== Sign In Using Google Pop-up ==//
     
     const logGooglePopUpUser = async () => {
         try {
                 const {user} = await signInWithGooglePopUp();
-                await createUserDocFromAuth(user);
+                
                 //display name for Google Popup instead of email
                 userEmail = user.displayName;
                 toast.dismiss();
@@ -60,7 +59,6 @@ const SignInForm = () => {
             if(response) {
                 const {user} = response;
                 const {email} = user;
-                setCurrentUser(user);
                 resetFormFields();
                 toast.success(`Welcome ${email} `)
             };
