@@ -7,11 +7,7 @@ import Navigation from './routes/navigation';
 import Authentication from './routes/auth/authentication';
 import Products from './components/Shop/products.component';
 
-const Shop = () => {
-  return (
-    <h1>THis is shop</h1>
-  )
-}
+
 const App = () => {
   
   return (

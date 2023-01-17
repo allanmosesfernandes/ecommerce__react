@@ -5,9 +5,19 @@ import CrwnLogo from '../assets/crown.svg'
 import { UserContext } from '../contexts/userContext'
 import { signOutAuthUser } from '../utils/firebase/firebase.utils'
 import CartIcon from '../components/CartIcon/cartIcon.component'
+import CartDropdown from '../components/CartContainer/CartDropdown'
+import { CartContext } from '../contexts/cartContext'
 const Navigation = () => {
     const { currentUser } = useContext(UserContext);
+    const {isCartOpen} = useContext(CartContext);
 
+    const cartToggler = () => {
+        console.log('object');
+        // setIsCartOpen(!isCartOpen);
+        // console.log(isCartOpen);
+    
+    }
+    console.log(isCartOpen)
     return (
     <Fragment>
         <div className="navigation">
@@ -22,9 +32,13 @@ const Navigation = () => {
                 (<Link className='nav-link' to='/sign-in'> SIGN IN </Link>) 
                 
                 }
-
-            <CartIcon />
+                <CartIcon onClick={cartToggler}/>
             </div>
+            {
+                isCartOpen && <CartDropdown />
+            }
+            
+      
         </div>
         <Outlet />
     </Fragment>
