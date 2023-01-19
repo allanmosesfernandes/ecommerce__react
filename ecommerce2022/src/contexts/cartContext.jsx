@@ -12,7 +12,7 @@ const existingCartItem = cartItems.find(item => item.id === productToAdd.id);
 // if product exists, increment quantity by 1 
 
 if(existingCartItem) {
-    return cartItems.map((item) => item.id === productToAdd.id ? {...item, quantity: item.quantity + 1} : {item})
+    return cartItems.map((item) => item.id === productToAdd.id ? {...item, quantity: item.quantity + 1} : item)
 }
 
 // return cartItems with the product and quantity set to 1
