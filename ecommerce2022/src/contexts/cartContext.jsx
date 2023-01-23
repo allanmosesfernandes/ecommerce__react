@@ -1,4 +1,5 @@
 import { createContext } from "react";
+import { useEffect } from "react";
 import { useState } from "react";
 import CartDropdown from "../components/CartContainer/CartDropdown";
 
@@ -43,7 +44,7 @@ const removeItemFromCartHelper = (cartItems, productToRemove) => {
     // check if qty is = 1, if yes it'll get filtered out
 
     if(exactItem.quantity === 1) {
-        return cartItems.filter(item => item.id === productToRemove.id)
+        return cartItems.filter(item => item.id !== productToRemove.id)
     }
 
     // If quantity is > 1, decrease quantity 
@@ -56,23 +57,35 @@ export const CartContext = createContext({
     setIsCartOpen: () => {},
     cartItems: [],
     addItemToCart: () => {},
-    removeItemFromCart: () => {}
+    removeItemFromCart: () => {},
+    cartCount: 0,
 })
 
 
 export const CartContextProvider = ({children}) => {
-    const [isCartOpen,setIsCartOpen] = useState(false);
-    const [cartItems, setCartItems] = useState([]);
-    
+
+    const [ isCartOpen,setIsCartOpen ] = useState(false);
+    const [ cartItems, setCartItems ] = useState([]);
+    const [ cartCount, setCartCount ] = useState(0);
+
+    useEffect(() => {
+        const newCartCount = cartItems.reduce((acc, currentValue) => acc + currentValue.quantity, 0);
+        setCartCount(newCartCount);
+    }, [cartItems])
+    //= Add Item to Cart ==//
+
     const addItemToCart = (productToAdd) => {
         setCartItems(addItemToCartHelperFn(cartItems, productToAdd));
     }
+
+    //= Remove Item from Cart ==//
 
     const removeItemFromCart = (productToRemove) => {
         setCartItems(removeItemFromCartHelper(cartItems, productToRemove))
     }
 
-    const value = {isCartOpen,setIsCartOpen,cartItems, addItemToCart, removeItemFromCart};
+    //== Exporting Context Values ==//
+    const value = {isCartOpen,setIsCartOpen,cartItems, addItemToCart, removeItemFromCart,cartCount};
 
     return <CartContext.Provider value={value}>{children}</CartContext.Provider>
 }
