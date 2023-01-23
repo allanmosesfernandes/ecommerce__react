@@ -2,9 +2,11 @@ import React from 'react';
 import './checkout-items.styles.scss'
 import { useContext } from 'react';
 import { CartContext } from '../../../contexts/cartContext';
+
+
 const CheckoutItems = ({item}) => {
 
-  const {cartItems, addItemToCart, removeItemFromCart} = useContext(CartContext);
+  const {cartItems, addItemToCart, removeItemFromCart, deleteItemFromCart} = useContext(CartContext);
 
   const increaseCartQty = (item) => {
     addItemToCart(item);
@@ -12,6 +14,11 @@ const CheckoutItems = ({item}) => {
 
   const decreaseQty = (item) => {
     removeItemFromCart(item);
+  }
+
+  const deleteItem = (item) => {
+    console.log(item);
+    deleteItemFromCart(item);
   }
 
   const { name, quantity, imageUrl, price } = item;
@@ -23,11 +30,11 @@ const CheckoutItems = ({item}) => {
       </div>
       
       <span className="name">{name}</span>
-      {/* <button onClick={() => decreaseQty(item)}>-</button> */}
+      <button onClick={() => decreaseQty(item)}>-</button>
       <span className="quantity">{quantity}</span>
       {/* <button onClick={() => increaseCartQty(item)}>+</button> */}
       <span className="price">{price}</span>
-      <span className="remove">&#10005;</span>
+      <button className="remove" onClick={() => deleteItem(item)}>&#10005;</button>
     </div>
   )
 }
