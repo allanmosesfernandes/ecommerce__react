@@ -15,7 +15,6 @@ const Checkout = () => {
         removeItemFromCart(item);
       }
 
-    console.log(cartItems)
   return (
     <div className='checkout-container'>
         <div className="checkout-header">

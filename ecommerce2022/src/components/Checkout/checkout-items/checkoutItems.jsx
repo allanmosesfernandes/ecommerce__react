@@ -30,9 +30,9 @@ const CheckoutItems = ({item}) => {
       </div>
       
       <span className="name">{name}</span>
-      <button onClick={() => decreaseQty(item)}>-</button>
-      <span className="quantity">{quantity}</span>
-      {/* <button onClick={() => increaseCartQty(item)}>+</button> */}
+      <span onClick={() => decreaseQty(item)}> &#10094; </span>
+      <span className=" value">{quantity}</span>
+      <div className='arrow' onClick={() => increaseCartQty(item)}> &#10095;</div> 
       <span className="price">{price}</span>
       <button className="remove" onClick={() => deleteItem(item)}>&#10005;</button>
     </div>
