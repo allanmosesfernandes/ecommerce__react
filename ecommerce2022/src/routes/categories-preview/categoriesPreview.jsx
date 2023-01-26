@@ -1,15 +1,16 @@
 import { Fragment, React , useContext } from 'react';
 import { CategoriesContext } from '../../contexts/CategoriesContext';
-import ProductCard from '../product-card-component/product.card.component'
-import './products.scss';
-import CartPreview from '../CartPreviewComponent/CartPreview.component';
-const Products = () => {
 
+import CartPreview from '../../components/CartPreviewComponent/CartPreview.component';
+
+
+const CategoriesPreview = () => {
  const { categoriesMap }  = useContext(CategoriesContext);
-  
+
+
   return (
  
-      <>
+      <div className='category-preview-container'>
       {
         Object.keys(categoriesMap)
         .map(category => <Fragment key={category}>
@@ -17,8 +18,8 @@ const Products = () => {
         </Fragment>)
       }
     
-    </>
+    </div>
   )
 }
 
-export default Products
+export default CategoriesPreview
