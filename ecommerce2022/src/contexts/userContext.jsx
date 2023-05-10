@@ -1,5 +1,4 @@
 import { createContext, useState, useEffect, useReducer } from "react";
-import { onAuthStateChangedListener, createUserDocFromAuth} from "../utils/firebase/firebase.utils";
 
 
 //== The actual user context/contextual value ==//
@@ -46,19 +45,7 @@ export const UserProvider = ({ children }) => {
           dispatch({type: USER_ACTION_TYPES.SET_CURRENT_USER, payload: user})
     } 
     const value = { currentUser, setCurrentUser };
-    // use Effect to track Authentication State CHanges
-    useEffect(() => {
-        const unsubscribe = onAuthStateChangedListener((user) => {
-            
-            if(user) {
-                createUserDocFromAuth(user)
-            }
-            setCurrentUser(user);
-           
-        });
 
-        return unsubscribe;
-    }, [])
 
     return <UserContext.Provider value={value}>{children}</UserContext.Provider>
 
